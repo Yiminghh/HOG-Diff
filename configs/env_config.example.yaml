@@ -1,0 +1,23 @@
+# Local environment overrides. Copy this file to `env_config.yaml` and edit to
+# match your machine. The actual `env_config.yaml` is gitignored so your
+# settings never get committed.
+#
+# Every key below is optional — unset variables keep whatever the shell
+# environment already provides. Uncomment only what you need.
+
+default:
+  PYTHONHASHSEED: "123"
+
+wandb:
+  entity: null           # Set to your wandb username or team to enable logging,
+                         # or leave null and run with `WANDB_MODE=disabled`.
+
+# Optional host-specific blocks. The bootstrap code in utils/loader.py picks the
+# block whose name is a prefix of $(hostname). Add your own if you want to set
+# CKPT_ROOT / DATA_ROOT / LD_LIBRARY_PATH / CUDA_VISIBLE_DEVICES per machine.
+#
+# example:
+#   myhost:
+#     CKPT_ROOT: "/path/to/checkpoints/"
+#     DATA_ROOT: "/path/to/data"
+#     CUDA_VISIBLE_DEVICES: "0"

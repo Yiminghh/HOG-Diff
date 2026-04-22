@@ -1,0 +1,38 @@
+# 深度学习框架 (Deep Learning Frameworks)
+# Tested with CUDA 11.8; install matching torch build from https://pytorch.org/get-started/previous-versions/
+torch==2.0.0
+torchvision==0.15.1
+torchaudio==2.0.1
+torch_geometric==2.6.1
+torch_scatter==2.1.1
+
+# 科学计算 (Scientific Computing)
+# numpy pinned <2 for rdkit 2022.3.5 ABI compatibility
+numpy==1.26.4
+scipy==1.11.4
+pandas==2.2.3
+pytz==2024.1
+networkx==3.2.1
+
+# 机器学习与优化 (Machine Learning & Optimization)
+scikit-learn==1.6.1
+hpbandster
+ConfigSpace
+POT==0.9.5
+
+# 日志与工具库 (Logging & Utilities)
+absl-py==2.1.0
+tensorboard
+pynvml==11.5.3
+tqdm
+wandb
+
+# 其他依赖 (Other Dependencies)
+ml_collections==0.1.1
+fcd_torch==1.0.7
+matplotlib
+rdkit==2022.3.5
+easydict==1.13
+ray[tune]
+dill==0.3.9
+PyYAML

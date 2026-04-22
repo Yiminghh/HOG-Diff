@@ -1,0 +1,146 @@
+ckpt: 'checkpoints/enzymes/enzymes.pth'
+
+data:
+  name: enzymes
+  max_node: 125
+  lifting_type: 'SCs'
+  max_media_size: 20
+  min_media_size: 4
+  test_split: 0.2
+  features: ['deg', 'eig']
+  atom_channels: 126
+  norm: [1.0, 1.0]
+  centered: False
+  latent_space: 'Laplacian'
+  re_lifting: False
+
+
+exp:
+  plot: False
+
+training:
+  n_iters: 15000
+  batch_size: 48
+  continuous: True
+  reduce_mean: False
+  likelihood_weighting: False
+  log_freq: 100
+  snapshot_freq: 500
+  snapshot_freq_for_preemption: 1000
+  snapshot_sampling: False
+  training_strategy: DenoisingScoreMatching
+  is_parallel: False
+  seed: 12
+  weight_atom: 3.0
+  weight_bond: 1.0
+
+
+OUtraining:
+  n_iters: 18000
+  batch_size: 16
+  continuous: True
+  reduce_mean: False
+  likelihood_weighting: False
+  log_freq: 100
+  snapshot_freq: 500
+  snapshot_freq_for_preemption: 1000
+  snapshot_sampling: False
+  training_strategy: DenoisingScoreMatching
+  is_parallel: False
+  seed: 12
+  weight_atom: 1.0
+  weight_bond: 1.0
+
+eval:
+  batch_size: 117
+  save_graph: False
+  seed: 12
+  fix_ckpt: False
+
+sampling:
+  method: 'pc'
+  predictor: Euler
+  corrector: None
+  n_steps: 0
+  noise_removal: True
+  probability_flow: False
+  atom_snr: None
+  bond_snr: None
+  scale_eps: None
+
+OUsampling:
+  method: 'pc'
+  predictor: Euler
+  corrector: Langevin
+  n_steps: 0
+  noise_removal: True
+  probability_flow: False
+  atom_snr: None
+  bond_snr: None
+  scale_eps: None
+
+sde:
+  type: 'VPSDE'
+  atom:
+    num_scales: 500  # SDE total steps (N)
+    schedule: 'linear'
+    beta_min: 0.2
+    beta_max: 1.0
+  bond:
+    num_scales: 500
+    schedule: 'linear'
+    beta_min: 0.2
+    beta_max: 1.0
+
+OUsde:
+  type: 'OUSDE'
+  atom:
+    num_scales: 100
+    schedule: 'cosine'
+    max_sigma: 5.
+  bond:
+    num_scales: 100
+    schedule: 'cosine'
+    max_sigma: 5.
+
+model:
+  type: 'ScoreNet'
+  ema_rate: 0.9999
+  nonlinearity: 'swish'
+  nf: 48
+  num_gnn_layers: 4
+  heads: 8
+  dropout: 0.2
+  rw_depth: 4
+  edge_th: 0.5
+  bond_hid: 3
+
+OUmodel:
+  type: 'ConScoreNet'
+  ema_rate: 0.9999
+  nonlinearity: 'swish'
+  nf: 16
+  num_gnn_layers: 6
+  heads: 4
+  dropout: 0.2
+  rw_depth: 8
+  edge_th: 0.5
+  bond_hid: 4
+
+optim:
+  weight_decay: 0
+  lr: 0.0005
+  beta1: 0.9
+  eps: 1.0e-8
+  warmup: 1000
+  grad_clip: 1.0
+  optimizer: 'Adam'
+
+OUoptim:
+  weight_decay: 0
+  lr: 0.0007
+  beta1: 0.9
+  eps: 1.0e-8
+  warmup: 1000
+  grad_clip: 1.0
+  optimizer: 'Adam'

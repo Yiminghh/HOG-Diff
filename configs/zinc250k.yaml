@@ -1,0 +1,144 @@
+exp_name: zinc250k_hogdiff
+
+ckpt: 'checkpoints/zinc250k/zinc250k.pth'
+
+
+data:
+  name: zinc250k
+  max_node: 38
+  lifting_type: 'CCs'
+  max_media_size: 9
+  min_media_size: 4
+  atom_channels: 9
+  norm: [2.0, 1.0]
+  centered: True
+  latent_space: 'Laplacian'
+  re_process: False
+  re_lifting: False
+
+
+exp:
+  plot: False
+
+training:
+  n_iters: 12000
+  batch_size: 1024
+  continuous: True
+  reduce_mean: False
+  likelihood_weighting: False
+  log_freq: 100
+  snapshot_freq: 2000
+  snapshot_freq_for_preemption: 2000
+  snapshot_sampling: False
+  training_strategy: 'DenoisingScoreMatching'
+  seed: 42
+  weight_atom: 0.1
+
+OUtraining:
+  n_iters: 1000000
+  batch_size: 64
+  continuous: True
+  reduce_mean: False
+  likelihood_weighting: False
+  log_freq: 100
+  snapshot_freq: 2000
+  snapshot_freq_for_preemption: 2000
+  snapshot_sampling: True
+  training_strategy: 'DenoisingScoreMatching'
+  seed: 42
+  weight_atom: 0.5
+
+eval:
+  batch_size: 2000
+  num_samples: 10000
+  metrics: ['validity', 'uniqueness', 'novelty', 'FCD', 'NSPDK']
+  save_graph: False
+  seed: 42
+
+sampling:
+  method: 'pc'
+  predictor: Euler
+  corrector: Langevin
+  noise_removal: True
+  probability_flow: False
+  n_steps: 3
+  atom_snr: 0.15
+  bond_snr: 0.1
+  scale_eps: 0.2
+
+OUsampling:
+  method: 'pc'
+  predictor: Euler
+  corrector: Langevin
+  n_steps: 0
+  noise_removal: True
+  probability_flow: False
+  atom_snr: None
+  bond_snr: None
+  scale_eps: None
+
+sde:
+  type: 'VPSDE'
+  atom:
+    num_scales: 100  # SDE total steps (N)
+    schedule: 'linear'
+    beta_min: 0.1
+    beta_max: 0.8
+  bond:
+    num_scales: 100
+    schedule: 'linear'
+    beta_min: 0.1
+    beta_max: 0.8
+
+OUsde:
+  type: 'OUBridge'
+  atom:
+    num_scales: 800
+    schedule: 'linear'
+    max_sigma: 0.2
+  bond:
+    num_scales: 800
+    schedule: 'linear'
+    max_sigma: 0.2
+
+model:
+  type: 'ScoreNet'
+  ema_rate: 0.9999
+  nonlinearity: 'swish'
+  nf: 128
+  num_gnn_layers: 5
+  heads: 8
+  dropout: 0.1
+  bond_hid: 6
+  rw_depth: 6
+  edge_th: 1/6
+
+OUmodel:
+  type: 'ConScoreNet'
+  ema_rate: 0.9999
+  nonlinearity: 'swish'
+  nf: 512
+  num_gnn_layers: 3
+  heads: 4
+  dropout: 0.2
+  bond_hid: 6
+  rw_depth: 6
+  edge_th: 1/6
+
+optim:
+  weight_decay: 0
+  lr: 0.001
+  beta1: 0.9
+  eps: 1.0e-8
+  warmup: 1000
+  grad_clip: 5.0
+  optimizer: 'Adam'
+
+OUoptim:
+  weight_decay: 0
+  lr: 0.0007
+  beta1: 0.9
+  eps: 1.0e-8
+  warmup: 1000
+  grad_clip: 1.0
+  optimizer: 'Adam'

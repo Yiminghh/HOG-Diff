@@ -1,0 +1,66 @@
+# Python
+__pycache__/
+*.pyc
+*.swp
+*.swo
+
+# IDE
+/.idea/
+/.vscode/
+*.code-workspace
+
+# OS cruft
+.DS_Store
+._*
+Thumbs.db
+
+# Local environment overrides (user copies env_config.example.yaml -> env_config.yaml)
+/configs/env_config.yaml
+
+# Private ablation configs (keep locally, not part of public release)
+/configs/*_no*.yaml
+
+# Runtime outputs
+/logs/
+/checkpoints/
+/checkpoints-meta/
+/tmp/
+/trash/
+/analysis/*
+!/analysis/data_generator.py
+!/analysis/sbm_evaluator.py
+!/analysis/visualize.py
+/out_mu/
+/out_mu_valid/
+
+# Per-dataset generated files (keep source files, ignore outputs + raw downloads)
+/data/**/processed/
+/data/**/cache/
+/data/**/raw/
+/data/mol_config.csv
+
+# Figures: keep the framework image, ignore local runs
+/figs/*
+!/figs/HOG-Diff-framework.png
+
+# wandb
+wandb/
+/wandb_logs/
+
+# Large binary artifacts
+*.pth
+*.pt
+*.npz
+*.pkl
+*.bin
+
+# …but keep the bundled generic-graph datasets under data/
+!data/**/*.pkl
+
+# ORCA build artifacts (keep the source, ignore compiled binaries)
+/evaluation/orca/orca
+/evaluation/orca/*.exe
+/evaluation/orca/*.o
+
+# Generated SMILES samples (timestamped)
+*_smiles(*).txt

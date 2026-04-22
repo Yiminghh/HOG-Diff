@@ -1,0 +1,140 @@
+ckpt: 'checkpoints/ego_small/ego_small.pth'
+
+data:
+  name: ego_small
+  max_node: 18
+  lifting_type: 'SCs'
+  max_media_size: 20
+  min_media_size: 4
+  test_split: 0.2
+  features: ['deg', 'eig']
+  atom_channels: 19
+  norm: [1.0, 1.0]
+  centered: False
+  latent_space: 'Laplacian'
+  re_lifting: False
+
+
+exp:
+  plot: False
+
+training:
+  n_iters: 14000
+  batch_size: 32
+  continuous: True
+  reduce_mean: False
+  likelihood_weighting: False
+  log_freq: 100
+  snapshot_freq: 1000
+  snapshot_freq_for_preemption: 1000
+  snapshot_sampling: False
+  training_strategy: DenoisingScoreMatching
+  weight_atom: 1.0
+  seed: 12
+
+OUtraining:
+  n_iters: 4000
+  batch_size: 64
+  continuous: True
+  reduce_mean: False
+  likelihood_weighting: False
+  log_freq: 100
+  snapshot_freq: 1000
+  snapshot_freq_for_preemption: 1000
+  snapshot_sampling: False
+  training_strategy: DenoisingScoreMatching
+  weight_atom: 0.5
+  seed: 12
+
+eval:
+  batch_size: 40
+  save_graph: False
+  seed: 42
+
+sampling:
+  method: 'pc'
+  predictor: Euler
+  corrector: Langevin
+  n_steps: 3
+  noise_removal: True
+  probability_flow: False
+  atom_snr: 0.5
+  bond_snr: 0.01
+  scale_eps: 0.9
+
+OUsampling:
+  method: 'pc'
+  predictor: Euler
+  corrector: Langevin
+  n_steps: 2
+  noise_removal: True
+  probability_flow: False
+  atom_snr: 0.05
+  bond_snr: 0.15
+  scale_eps: 0.5
+
+sde:
+  type: 'VPSDE'
+  atom:
+    num_scales: 300  # SDE total steps (N)
+    schedule: 'linear'
+    beta_min: 0.4
+    beta_max: 1.0
+  bond:
+    num_scales: 300
+    schedule: 'linear'
+    beta_min: 0.4
+    beta_max: 1.0
+
+OUsde:
+  type: 'OUBridge'
+  atom:
+    num_scales: 200
+    schedule: 'cosine'
+    max_sigma: 5.
+  bond:
+    num_scales: 200
+    schedule: 'cosine'
+    max_sigma: 5.
+
+model:
+  type: 'ScoreNet'
+  ema_rate: 0.9999
+  nonlinearity: 'swish'
+  nf: 256
+  num_gnn_layers: 4
+  heads: 8
+  dropout: 0.2
+  rw_depth: 8
+  edge_th: 0.5
+  bond_hid: 6
+
+OUmodel:
+  type: 'ConScoreNet'
+  ema_rate: 0.9999
+  nonlinearity: 'swish'
+  nf: 128
+  num_gnn_layers: 7
+  heads: 4
+  dropout: 0.2
+  rw_depth: 3
+  edge_th: 0.5
+  bond_hid: 5
+
+optim:
+  weight_decay: 0
+  lr: 0.003
+  beta1: 0.9
+  eps: 1.0e-8
+  warmup: 1000
+  grad_clip: 1.0
+  optimizer: 'Adam'
+
+OUoptim:
+  weight_decay: 0
+  lr: 0.01
+  beta1: 0.9
+  eps: 1.0e-8
+  warmup: 1000
+  grad_clip: 1.0
+  optimizer: 'Adam'
