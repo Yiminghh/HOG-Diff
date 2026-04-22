@@ -27,9 +27,6 @@ Thumbs.db
 /tmp/
 /trash/
 /analysis/*
-!/analysis/data_generator.py
-!/analysis/sbm_evaluator.py
-!/analysis/visualize.py
 /out_mu/
 /out_mu_valid/
 
